@@ -32,18 +32,20 @@ const Yhteensa = (props) => {
 
 const App = () => {
   const kurssi = 'Half Stack -sovelluskehitys'
-  const osa1 = {
+  const osat = [
+    {
     nimi: 'Reactin alkeet',
     tehtavia: 10
-  }
-  const osa2 = {
+    },
+    {
     nimi: 'Tiedonvälitys propseilla',
     tehtavia: 7
-  }
-  const osa3 = {
+    },
+    {
     nimi: 'Komponenttien tila',
     tehtavia: 14
-  }
+    }
+  ]
 
   return (
     <div>
