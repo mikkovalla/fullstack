@@ -34,7 +34,7 @@ const App = () => {
   const kurssi = {
 
     nimi: 'Half Stack -sovelluskehitys',
-    osat = [
+    osat: [
     {
     nimi: 'Reactin alkeet',
     tehtavia: 10
