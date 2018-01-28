@@ -59,18 +59,23 @@ const Statistiikka = (props) => {
 }
 
 const Statistiikat = (props) => {
-
-  return (
-    <table>
-      <tbody>
-        <Statistiikka nimi = {props.tiedot.hyva} tila = {props.state.hyva} />
-        <Statistiikka nimi = {props.tiedot.huono} tila = {props.state.huono} />
-        <Statistiikka nimi = {props.tiedot.neutraali} tila = {props.state.neutraali} />
-        <Statistiikka nimi = {props.tiedot.keskiarvo} tila = {props.state.keskiarvo} tilat = {props.state}/>
-        <Statistiikka nimi = {props.tiedot.positiivisia} tila = {props.state.positiivisia} tilat = {props.state}/>
-      </tbody>
-    </table>
-  )
+    if(props.state.statAll > 0){
+      return (
+        <table>
+          <tbody>
+            <Statistiikka nimi = {props.tiedot.hyva} tila = {props.state.hyva} />
+            <Statistiikka nimi = {props.tiedot.huono} tila = {props.state.huono} />
+            <Statistiikka nimi = {props.tiedot.neutraali} tila = {props.state.neutraali} />
+            <Statistiikka nimi = {props.tiedot.keskiarvo} tila = {props.state.keskiarvo} tilat = {props.state}/>
+            <Statistiikka nimi = {props.tiedot.positiivisia} tila = {props.state.positiivisia} tilat = {props.state}/>
+          </tbody>
+        </table>
+      )
+    } else {
+      return (
+        <p>Ei yhtään palautetta annettu</p>
+      )
+    }
 }
 
 class App extends React.Component {
