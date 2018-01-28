@@ -38,10 +38,41 @@ class App extends React.Component {
           <div>
             <Button handleClick = {this.arvoSeur} text = "seuraava" />
             <Button handleClick = {this.aanesta} text = "Äänestä" />
-          </div>        
+          </div> 
+          <h4>Anecdote with most votes:</h4>
+          <Stats  aanet = {this.aanet} anecdotes = {this.props.anecdotes} />      
         </div>
       )
     }
+}
+
+const Stats = (props) => {
+  let yksi  = 0
+  let paras = 0
+  let monesko = 0
+
+    props.aanet.forEach((aani) => {
+      if(aani > paras){
+        paras = aani
+        monesko = yksi
+      }
+      yksi++
+    })
+
+    if(paras === 0){
+      return (
+        <div className="votes">No votes yet!</div>
+      )
+    }
+
+    return (
+      <div>
+          <div className="anekki">
+            {props.anecdotes[monesko]}
+          </div>
+          <AnnaAani aanet = {paras} />
+      </div>
+    )  
 }
 
 const Button = ({handleClick, text}) => (
