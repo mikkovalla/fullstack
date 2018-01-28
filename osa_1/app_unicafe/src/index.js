@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 const Nappula = ({ klikki, teksti }) => (
-      <button onClick={klikki}>
-          {teksti}
-        </button>
+  <button onClick={klikki}>
+    {teksti}
+  </button>
 )
 
 const Otsikko = (props) => {
@@ -72,9 +72,9 @@ const Statistiikat = (props) => {
         </table>
       )
     } else {
-      return (
-        <p>Ei yhtään palautetta annettu</p>
-      )
+        return (
+          <p>Ei yhtään palautetta annettu</p>
+        )
     }
 }
 
