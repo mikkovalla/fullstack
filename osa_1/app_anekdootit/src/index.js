@@ -6,9 +6,15 @@ class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-          selected: 0
+          selected: 0,
         }
-      this.arvoSeur = this.arvoSeur.bind(this)
+
+        this.aanet = [
+          0, 0, 0, 0, 0, 0
+        ]
+
+       this.arvoSeur = this.arvoSeur.bind(this)
+       this.aanesta = this.aanesta.bind(this)
     }
     
     arvoSeur = () => {
@@ -17,14 +23,21 @@ class App extends React.Component {
       })
     }
 
+    aanesta = () => {
+      this.aanet[this.state.selected] += 1
+      console.log(this.aanet)
+    }
+
     render () {
       return (
         <div>
           <div className="anekki">
            {this.props.anecdotes[this.state.selected]}
-          </div> 
+           </div> 
+          <AnnaAani aanet = {this.aanet[this.state.selected]} />
           <div>
-            <Button handleClick = {this.arvoSeur} text = "next anectode" />
+            <Button handleClick = {this.arvoSeur} text = "seuraava" />
+            <Button handleClick = {this.aanesta} text = "Äänestä" />
           </div>        
         </div>
       )
@@ -36,6 +49,8 @@ const Button = ({handleClick, text}) => (
     {text}
   </button>
 )
+
+const AnnaAani = ({ aanet }) => <div className="votes">has received {aanet} votes</div>
 
 const satLuku = () => {
   return Math.floor((Math.random() * 6) + 0)

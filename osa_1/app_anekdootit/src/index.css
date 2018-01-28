@@ -17,6 +17,14 @@ button {
   text-align: center;
   color: blue;
   border: tomato dotted 3px;
-  margin: auto;
-  padding: 10px;
+  margin: 20px auto;
+}
+
+.votes {
+  font-style: oblique;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto 20px auto;
 }
