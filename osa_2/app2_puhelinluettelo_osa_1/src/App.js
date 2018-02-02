@@ -22,22 +22,30 @@ class App extends React.Component {
 
   lisaaNimi = (event) => {
     event.preventDefault()
-    const uusiPersoona = {
-      name: this.state.newName,
-      id: Math.random()
-    }
-    console.log('uusin lisäys', uusiPersoona)
-    const persons = this.state.persons.concat(uusiPersoona)
-    console.log('persoonat', persons)
+    const uusin = this.state.newName
+    const onkoListalla = this.state.persons.map(nimi => nimi.name).includes(uusin)
+    //console.log('löytyykö?', onkoListalla)
 
-    this.setState ({
-      persons,
-      newName: ''
-    })
+    if(!onkoListalla) {
+        const uusiPersoona = {
+          name: this.state.newName,
+          //id: Math.random()
+        }
+       // console.log('uusin lisäys', uusiPersoona)
+        const persons = this.state.persons.concat(uusiPersoona)
+        //console.log('persoonat', persons)  
+        
+        this.setState ({
+          persons,
+          newName: ''
+        }) 
+    } else {
+      alert("Nimi on jo listalla!!!")
+    }
   }
 
   handleNameAdd = (event) => {
-    console.log('event', event.target.value)
+    //console.log('event', event.target.value)
     this.setState ({ 
       newName: event.target.value
     })
