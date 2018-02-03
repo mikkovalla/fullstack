@@ -6,10 +6,14 @@ class App extends React.Component {
     super(props)
     this.state = {
       persons: [
-        {name: 'Arto Hellas', number: '03300456'}
+        { name: 'Arto Hellas', number: '040-123456' },
+        { name: 'Martti Tienari', number: '040-123456' },
+        { name: 'Arto Järvinen', number: '040-123456' },
+        { name: 'Lea Kutvonen', number: '040-123456' }
       ],
       newName: '',
-      newNumb: ''
+      newNumb: '',
+      filter: ''
     }
   }
 
@@ -19,6 +23,19 @@ class App extends React.Component {
         <p key = {person.name}> {person.name} {person.number}</p>
         )
     )
+  }
+
+  filterNames (persons) {
+    
+    const filterPeople = this.state.persons.filter(nimi => nimi.name.substring(0, this.state.filter.length).toUpperCase() === this.state.filter.substring(0, this.state.filter.length).toUpperCase())    
+    console.log('rajatut', filterPeople)
+
+    return (
+      filterPeople.map(person =>
+        <p key = {person.name}> {person.name} {person.number}</p>
+        )
+    )
+    
   }
 
   lisaaHenkilo = (event) => {
@@ -60,29 +77,39 @@ class App extends React.Component {
     })
   }
 
+  handleFiltering = (event) => {
+    this.setState ({
+      filter: event.target.value
+    })
+  }
+
   render () {
+    const rajattu =
+    this.state.filter === '' ?
+    this.kaikkiNimet() :
+    this.filterNames()
+
     return (
       <div>
-
-        <h2>Puhelinluettelo</h2>
-        
-        <form onSubmit={this.lisaaHenkilo}>
-          
+        <h2>Puhelinluettelo</h2>        
+        <div>
+          rajaa näytettäviä: <input value={this.state.filter} onChange={this.handleFiltering}/>
+        </div>
+        <h4>Lisää uusi</h4>
+        <form onSubmit={this.lisaaHenkilo}>  
           <div>
             nimi: <input value={this.state.newName} onChange={this.handleNameAdd}/>
           </div>
           <div>
             numero: <input value={this.state.newNumb} onChange={this.handleNumbAdd}/>
           </div>
-          
           <div>
             <button type="submit">Lisää</button>          
           </div>
         </form>
-
-        <h2>Numerot</h2>
+        <h4>Numerot</h4>
         <div>
-         {this.kaikkiNimet()}
+         {rajattu}
         </div>
       </div>
     )
