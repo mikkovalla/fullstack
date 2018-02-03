@@ -1,5 +1,5 @@
 import React from 'react'
-//import Numerot from './components/Numerot'
+import FilleroidutNimet from './components/FilleroidutNimet'
 
 class App extends React.Component {
   constructor(props) {
@@ -15,27 +15,6 @@ class App extends React.Component {
       newNumb: '',
       filter: ''
     }
-  }
-
-  kaikkiNimet (persons) {
-    return (
-        this.state.persons.map(person =>
-        <p key = {person.name}> {person.name} {person.number}</p>
-        )
-    )
-  }
-
-  filterNames (persons) {
-    
-    const filterPeople = this.state.persons.filter(nimi => nimi.name.substring(0, this.state.filter.length).toUpperCase() === this.state.filter.substring(0, this.state.filter.length).toUpperCase())    
-    console.log('rajatut', filterPeople)
-
-    return (
-      filterPeople.map(person =>
-        <p key = {person.name}> {person.name} {person.number}</p>
-        )
-    )
-    
   }
 
   lisaaHenkilo = (event) => {
@@ -84,10 +63,6 @@ class App extends React.Component {
   }
 
   render () {
-    const rajattu =
-    this.state.filter === '' ?
-    this.kaikkiNimet() :
-    this.filterNames()
 
     return (
       <div>
@@ -107,10 +82,7 @@ class App extends React.Component {
             <button type="submit">Lisää</button>          
           </div>
         </form>
-        <h4>Numerot</h4>
-        <div>
-         {rajattu}
-        </div>
+        <FilleroidutNimet nimia = {this.state.persons} filtteri = {this.state.filter} />
       </div>
     )
   }
