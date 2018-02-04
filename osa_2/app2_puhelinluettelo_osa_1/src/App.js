@@ -1,6 +1,6 @@
 import React from 'react'
 import FilleroidutNimet from './components/FilleroidutNimet'
-import axios from 'axios'
+import personService from './services/persons'
 
 class App extends React.Component {
   constructor(props) {
@@ -15,13 +15,11 @@ class App extends React.Component {
 
   componentDidMount () {
     //console.log('did mount')
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response => {
+    personService
+    .getAll()
+    .then(persons => {
       //console.log('vastaus', response)
-      this.setState({
-        persons: response.data
-      })
+      this.setState({persons})
     })
     
   }
@@ -37,10 +35,10 @@ class App extends React.Component {
           name: this.state.newName,
           number: this.state.newNumb
         }
-        axios
-        .post('http://localhost:3001/persons', uusiPersoona)
-        .then(response => {
-          //console.log(response)
+        personService
+        .create(uusiPersoona)
+        .then(uusiPersoona => {
+          console.log(uusiPersoona)
           this.setState({
             persons: this.state.persons.concat(uusiPersoona),
             newName: '',
