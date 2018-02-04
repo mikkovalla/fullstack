@@ -12,11 +12,11 @@ class App extends React.Component {
   }
 
   componentDidMount () {
-    console.log('did mount')
+    //console.log('did mount')
     axios
     .get('https://restcountries.eu/rest/v2/all?fields=name;flag;capital;population')
     .then(response => {
-      console.log('response', response.data)
+      //console.log('response', response.data)
       this.setState ({
         countries: response.data
       })
@@ -24,38 +24,51 @@ class App extends React.Component {
   }
 
   handleInput = (event) => {
-    console.log('input', event.target.value)
+    //console.log('input', event.target.value)
     this.setState({
       filter: event.target.value
     })
   }
 
+  countryInfo (countries) {    
+    return (
+      countries.map(maa =>
+        <div key = {maa.name}>
+        <h5>{maa.name}</h5>
+          <div>
+            <p>capital: {maa.capital}</p>
+            <br/>
+            <p>population: {maa.population}</p>
+            <br/>
+            <img src={maa.flag} alt="maan lippu"/>
+          </div>
+        </div>
+      )
+    )
+   }
+
+   oneCountry (id) {
+    //console.log('klikattu', id)
+    this.setState({
+      filter: id
+    })
+   }
+
   handleFiltering (countries) {
 
     const filterCountries = this.state.countries.filter(maa => maa.name.substring(0, this.state.filter.length).toUpperCase() === this.state.filter.substring(0, this.state.filter.length).toUpperCase())
-    console.log('maita', filterCountries)
-    console.log('pituus', filterCountries.length)
+    //console.log('maita', filterCountries)
+    //console.log('pituus', filterCountries.length)
     
     if(filterCountries.length < 10) {
       if(filterCountries.length === 1) {
         return (
-          filterCountries.map(maa =>
-          <div key = {maa.name}>
-          <h5>{maa.name}</h5>
-            <div>
-              <p>capital: {maa.capital}</p>
-              <br/>
-              <p>population: {maa.population}</p>
-              <br/>
-              <img src={maa.flag} alt="maan lippu"/>
-            </div>
-          </div>
-          )
+          this.countryInfo(filterCountries)
         )
       }
       return (
         filterCountries.map(maa => 
-        <p key= {maa.name}>{maa.name}</p>
+        <p key = {maa.name} onClick={() => this.oneCountry(maa.name)}>{maa.name}</p> 
         )
       )        
     } else {
@@ -66,7 +79,7 @@ class App extends React.Component {
   }
 
   render () {
-    console.log('maita', this.state.countries)
+    //console.log('maa', this.state.maa)
     return (
       <div>
         <div>
