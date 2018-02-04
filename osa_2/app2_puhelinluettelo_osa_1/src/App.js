@@ -43,19 +43,10 @@ class App extends React.Component {
           //console.log(response)
           this.setState({
             persons: this.state.persons.concat(uusiPersoona),
-            uusiPersoona
+            newName: '',
+            newNumb: ''
           })
         })
-       /* 
-       // console.log('uusin lisäys', uusiPersoona)
-        const persons = this.state.persons.concat(uusiPersoona)
-        //console.log('persoonat', persons)  
-        
-        this.setState ({
-          persons,
-          newName: '',
-          newNumb: ''
-        }) */
     } else {
       alert("Nimi on jo listalla!!!")
     }
