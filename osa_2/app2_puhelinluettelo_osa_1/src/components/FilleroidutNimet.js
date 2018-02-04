@@ -10,8 +10,8 @@ const FilleroidutNimet = ({ nimia, filtteri }) => {
     <Filtteri persons = {nimia} filtteri = {filtteri} /> :
     <Nimet persons = {nimia} />
   
-    console.log('nimia', nimia)      
-    console.log('filsu', filtteri)
+    //console.log('nimia', nimia)      
+    //console.log('filsu', filtteri)
 
     return (
       <div>

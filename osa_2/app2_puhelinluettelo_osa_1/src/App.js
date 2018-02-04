@@ -14,11 +14,11 @@ class App extends React.Component {
   }
 
   componentDidMount () {
-    console.log('did mount')
+    //console.log('did mount')
     axios
     .get('http://localhost:3001/persons')
     .then(response => {
-      console.log('vastaus', response)
+      //console.log('vastaus', response)
       this.setState({
         persons: response.data
       })
@@ -36,8 +36,17 @@ class App extends React.Component {
         const uusiPersoona = {
           name: this.state.newName,
           number: this.state.newNumb
-          //id: Math.random()
         }
+        axios
+        .post('http://localhost:3001/persons', uusiPersoona)
+        .then(response => {
+          //console.log(response)
+          this.setState({
+            persons: this.state.persons.concat(uusiPersoona),
+            uusiPersoona
+          })
+        })
+       /* 
        // console.log('uusin lisäys', uusiPersoona)
         const persons = this.state.persons.concat(uusiPersoona)
         //console.log('persoonat', persons)  
@@ -46,7 +55,7 @@ class App extends React.Component {
           persons,
           newName: '',
           newNumb: ''
-        }) 
+        }) */
     } else {
       alert("Nimi on jo listalla!!!")
     }
