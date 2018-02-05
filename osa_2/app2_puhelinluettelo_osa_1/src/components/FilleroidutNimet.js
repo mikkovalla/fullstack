@@ -3,23 +3,20 @@ import Filtteri from './Filtteri'
 import Nimet from './Nimet'
 
 
-const FilleroidutNimet = ({ nimia, filtteri }) => {
+const FilleroidutNimet = ({ nimia, filtteri, handleClick, text}) => {
     
     const rajattu =
     filtteri !== '' ?
-    <Filtteri persons = {nimia} filtteri = {filtteri} /> :
-    <Nimet persons = {nimia} />
+    <Filtteri persons = {nimia} filtteri = {filtteri} handleClick = {handleClick} text = {text}/> :
+    <Nimet persons = {nimia} handleClick = {handleClick} text = {text}/>
   
     //console.log('nimia', nimia)      
     //console.log('filsu', filtteri)
 
     return (
       <div>
-        <h4>Numerot</h4>
-        <div>
-         {rajattu}
-        </div>
-      </div>
+        {rajattu}
+      </div>         
     )
 }
 export default FilleroidutNimet

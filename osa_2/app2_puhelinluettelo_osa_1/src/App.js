@@ -20,8 +20,25 @@ class App extends React.Component {
     .then(persons => {
       //console.log('vastaus', response)
       this.setState({persons})
-    })
+    })   
+  }
+  
+  handleDelete = (id) => {
+    console.log('id', id)
+    const hlo = this.state.persons.find(p => p.id === id)
+    const nimi = hlo.name
     
+    if(window.confirm("Haluatko poistaa henkilön " + nimi + " ?")){
+      personService
+      .poista(id)
+      .then(poistettu => {
+        const h = this.state.persons.filter(p => p.id !== id)
+        console.log('poistettu', h)
+        this.setState({
+          persons:h
+        })
+      })
+    }
   }
 
   lisaaHenkilo = (event) => {
@@ -70,7 +87,6 @@ class App extends React.Component {
   }
 
   render () {
-
     return (
       <div>
         <h2>Puhelinluettelo</h2>        
@@ -89,10 +105,14 @@ class App extends React.Component {
             <button type="submit">Lisää</button>          
           </div>
         </form>
-        <FilleroidutNimet nimia = {this.state.persons} filtteri = {this.state.filter} />
-      </div>
+        <div>
+        <h4>Numerot</h4>
+        <div>
+          <FilleroidutNimet nimia = {this.state.persons} filtteri = {this.state.filter} handleClick = {(id) => this.handleDelete(id)} text = {"poista"}/>
+        </div>
+        </div>    
+    </div>
     )
   }
 }
-
 export default App
