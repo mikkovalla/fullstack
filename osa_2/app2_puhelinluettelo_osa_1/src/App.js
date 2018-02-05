@@ -44,7 +44,8 @@ class App extends React.Component {
   lisaaHenkilo = (event) => {
     event.preventDefault()
     const uusin = this.state.newName
-    const onkoListalla = this.state.persons.map(nimi => nimi.name).includes(uusin)
+    const onkoListalla = this.state.persons.map(nimi => nimi.name.substring(0, uusin.length).toUpperCase()).includes(uusin.substring(0,uusin.length).toUpperCase())
+
     //console.log('löytyykö?', onkoListalla)
 
     if(!onkoListalla) {
@@ -63,7 +64,20 @@ class App extends React.Component {
           })
         })
     } else {
-      alert("Nimi on jo listalla!!!")
+      if(window.confirm(uusin + " on jo luettelossa, korvataanko vanha numero uudella?")){
+        const hlo = this.state.persons.find(nimi => nimi.name.substring(0, uusin.length).toUpperCase() === uusin.substring(0,uusin.length).toUpperCase())
+        const muutettu = {...hlo, number: this.state.newNumb}
+
+        personService
+        .update(hlo.id, muutettu)
+        .then(muutettu => {
+          console.log(muutettu)
+          const persons = this.state.persons.filter(p => p.id !== hlo.id)
+          this.setState({
+            persons: persons.concat(muutettu)
+          })
+        })
+      }
     }
   }
 
