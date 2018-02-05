@@ -1,6 +1,7 @@
 import React from 'react'
 import FilleroidutNimet from './components/FilleroidutNimet'
 import personService from './services/persons'
+import Notifikaatio from './components/Notifikaatio'
 
 class App extends React.Component {
   constructor(props) {
@@ -9,7 +10,8 @@ class App extends React.Component {
       persons: [],
       newName: '',
       newNumb: '',
-      filter: ''
+      filter: '',
+      notice: null
     }
   }
 
@@ -35,9 +37,13 @@ class App extends React.Component {
         const h = this.state.persons.filter(p => p.id !== id)
         console.log('poistettu', h)
         this.setState({
-          persons:h
+          persons:h,
+          notice: nimi + ` on poistettu palvelusta`
         })
-      })
+      },
+      setTimeout(() => {
+        this.setState({notice: null})
+      }, 3000))
     }
   }
 
@@ -60,9 +66,13 @@ class App extends React.Component {
           this.setState({
             persons: this.state.persons.concat(uusiPersoona),
             newName: '',
-            newNumb: ''
+            newNumb: '',
+            notice: uusiPersoona.name + ' lisättiin palveluun'
           })
-        })
+        },
+        setTimeout(() => {
+          this.setState({notice: null})
+        }, 3000))
     } else {
       if(window.confirm(uusin + " on jo luettelossa, korvataanko vanha numero uudella?")){
         const hlo = this.state.persons.find(nimi => nimi.name.substring(0, uusin.length).toUpperCase() === uusin.substring(0,uusin.length).toUpperCase())
@@ -74,9 +84,13 @@ class App extends React.Component {
           console.log(muutettu)
           const persons = this.state.persons.filter(p => p.id !== hlo.id)
           this.setState({
-            persons: persons.concat(muutettu)
+            persons: persons.concat(muutettu),
+            notice: hlo.name + ' puhelinnumero päivitetty'
           })
-        })
+        },
+        setTimeout(() => {
+          this.setState({notice: null})
+        }, 3000))
       }
     }
   }
@@ -103,7 +117,8 @@ class App extends React.Component {
   render () {
     return (
       <div>
-        <h2>Puhelinluettelo</h2>        
+        <h2>Puhelinluettelo</h2> 
+        <Notifikaatio message = {this.state.notice} />       
         <div>
           rajaa näytettäviä: <input value={this.state.filter} onChange={this.handleFiltering}/>
         </div>
