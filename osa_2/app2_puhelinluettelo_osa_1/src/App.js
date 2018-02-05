@@ -44,6 +44,15 @@ class App extends React.Component {
       setTimeout(() => {
         this.setState({notice: null})
       }, 3000))
+      .catch(error => {
+        this.setState({
+          persons: this.state.persons.filter(p => p.id !== nimi.id),
+          notice: nimi + ' on jo poistettu palvelusta!'
+        })
+      },
+      setTimeout(() => {
+        this.setState({notice: null})
+      }, 3000))
     }
   }
 
@@ -86,6 +95,15 @@ class App extends React.Component {
           this.setState({
             persons: persons.concat(muutettu),
             notice: hlo.name + ' puhelinnumero päivitetty'
+          })
+        },
+        setTimeout(() => {
+          this.setState({notice: null})
+        }, 3000))
+        .catch(error => {
+          this.setState({
+            persons: this.state.persons.filter(p => p.id !== hlo.id),
+            notice: hlo.name + ' on valitettavasti poistettu palvelusta!'
           })
         },
         setTimeout(() => {
