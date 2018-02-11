@@ -6,7 +6,7 @@ const Nimet = ({ persons, handleClick, text }) => {
     return (
       <div>
         {persons.map(person =>
-        <p key = {person.id}> {person.name} {person.number} {<Button handleClick = {handleClick} text = {text} id = {person.id}/>}</p>
+        <p key = {String(person.id)}> {person.name} {person.number} {<Button handleClick = {handleClick} text = {text} id = {person.id}/>}</p>
         )}
         </div>
     )
