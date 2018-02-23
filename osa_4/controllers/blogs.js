@@ -1,15 +1,15 @@
-const blogsrouter = require('express').Router()
+const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
-blogsrouter.get('/', (request, response) => {
+blogsRouter.get('/', (request, response) => {
   Blog
     .find({})
     .then(blogs => {
-      response.json(blogs)
+      response.json(blogs.map(formatBlog))
     })
 })
 
-blogsrouter.post('/', (request, response) => {
+blogsRouter.post('/', (request, response) => {
   const blog = new Blog(request.body)
 
   blog
@@ -21,11 +21,12 @@ blogsrouter.post('/', (request, response) => {
 
 const formatBlog = blog => {
   return {
-    id: blog._id,
     title: blog.title,
     author: blog.author,
     url: blog.url,
-    likes: blog.likes
+    likes: blog.likes,
+    id: blog._id
   }
 }
-module.exports = blogsrouter
+
+module.exports = blogsRouter

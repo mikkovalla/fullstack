@@ -10,11 +10,11 @@ const logger = (request, response, next) => {
 
 const error = (request, response) => {
   response.status(404).send({
-    error: 'unknown endpoint'
+    error: 'unknown endpoint'    
   })
 }
 
 module.exports = {
   logger,
-  error
+  error,
 }
