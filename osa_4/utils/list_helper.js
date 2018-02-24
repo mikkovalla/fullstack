@@ -13,7 +13,15 @@ const totalLikes = (blogs) => {
   return result
 }
 
+const favoriteBlog = (blogs) => {
+  const parasBlogi = blogs
+    .reduce((paras, vertailtava) =>
+      paras === null || vertailtava.likes > paras.likes ? vertailtava : paras, null)
+
+  return parasBlogi
+}
 module.exports = {
   dummy,
-  totalLikes
+  totalLikes,
+  favoriteBlog
 }
