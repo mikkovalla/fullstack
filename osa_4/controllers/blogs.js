@@ -1,9 +1,13 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({})
-  response.json(blogs.map(formatBlog))
+  const blogs = await Blog.find({}).populate('user', {
+    username: 1,
+    name: 1
+  })
+  response.json(blogs.map(Blog.format))
 })
 
 blogsRouter.post('/', async (request, response) => {
@@ -16,11 +20,14 @@ blogsRouter.post('/', async (request, response) => {
       })
     }
 
+    const user = await User.findById(body.userId)
+
     const blog = new Blog({
       title: body.title === undefined ? null : body.title,
       author: body.author,
       url: body.url === undefined ? null : body.url,
-      likes: body.likes
+      likes: body.likes,
+      user: user._id
     })
 
     if (isNaN(blog.likes)) {
@@ -28,7 +35,9 @@ blogsRouter.post('/', async (request, response) => {
     }
 
     const savedBlog = await blog.save()
-    response.json(formatBlog(savedBlog))
+    user.blogs = user.blogs.concat(savedBlog._id) //käyttäjän liittäminen blogiin
+    await user.save()
+    response.json(Blog.format(savedBlog))
   } catch (error) {
     console.log(error)
     response.status(500).json({
@@ -42,7 +51,7 @@ blogsRouter.get('/:id', async (request, response) => {
     const blog = await Blog.findById(request.params.id)
 
     if (blog) {
-      response.json(formatBlog(blog))
+      response.json(Blog.format(blog))
     } else {
       response.status(404).end()
     }
@@ -80,7 +89,7 @@ blogsRouter.put('/:id', async (request, response) => {
     const updateBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
       likes: body.likes
     })
-    response.json(formatBlog(updateBlog))
+    response.json(Blog.format(updateBlog))
 
   } catch (error) {
     console.log(error)
@@ -89,15 +98,5 @@ blogsRouter.put('/:id', async (request, response) => {
     })
   }
 })
-
-const formatBlog = blog => {
-  return {
-    title: blog.title,
-    author: blog.author,
-    url: blog.url,
-    likes: blog.likes,
-    id: blog._id
-  }
-}
 
 module.exports = blogsRouter
