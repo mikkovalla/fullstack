@@ -61,7 +61,7 @@ test('check blog with same title exists', async () => {
 
 test('new blog can be added', async () => {
 
-  await api.post('/api/blogs').send(newBlog).expect(201).expect('Content-Type', /application\/json/)
+  await api.post('/api/blogs').send(newBlog).expect(200).expect('Content-Type', /application\/json/)
 
   const response = await api.get('/api/blogs')
 
