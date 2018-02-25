@@ -113,3 +113,27 @@ describe('most blogs', () => {
     })
   })
 })
+
+describe('most likes', () => {
+
+  test('when there is no blogs result is null', () => {
+    expect(listHelper.mostLikes(emptyList)).toBe(null)
+    console.log('ei blogeja',listHelper.mostLikes(emptyList))
+  })
+
+  test('list with one blog returns that blogs author and likes', () => {
+    expect(listHelper.mostLikes(listWithOneBlog)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 5
+    })
+    console.log('yksi blogi',listHelper.mostLikes(listWithOneBlog))
+  })
+
+  test('returns author with most likes and total likes count', () => {
+    expect(listHelper.mostLikes(blogs)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 17
+    })
+    console.log('kaikki blogit',listHelper.mostLikes(blogs))
+  })
+})
