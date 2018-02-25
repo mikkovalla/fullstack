@@ -181,8 +181,29 @@ describe.only('when there is initially one user in the database', async () => {
     expect(usersAfterOperation.length).toBe(usersBeforeOperation.length)
   })
 
-})
+  test('POST /api/users fails with statuscode 400 if password is under 3 characters', async () => {
+    const usersBeforeOperation = await usersInDb()
 
+    const newUser = {
+      username: 'uusintahittia',
+      name: 'lllll',
+      password: 'aa'
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body).toEqual({
+      error: 'password must be at over 3 characters'
+    })
+
+    const usersAfterOperation = await usersInDb()
+    expect(usersAfterOperation.length).toBe(usersBeforeOperation.length)
+  })
+})
 
 afterAll(() => {
   server.close()
