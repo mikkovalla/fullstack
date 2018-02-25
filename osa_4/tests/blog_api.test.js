@@ -90,6 +90,16 @@ test('if likes is undefined, put likes equal to 0', async () => {
   expect(vikaBlogi.title).toEqual('liketonBlogi')
 })
 
+test('cannot add new blog without url or title', async () => {
+  const virheellinenBlogi = {
+    author: 'tuut tuut',
+    likes: 666
+  }
+
+  await api.post('/api/blogs').send(virheellinenBlogi).expect(400)
+
+})
+
 afterAll(() => {
   server.close()
 })
