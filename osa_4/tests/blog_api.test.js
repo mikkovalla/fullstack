@@ -157,7 +157,32 @@ describe.only('when there is initially one user in the database', async () => {
     const usernames = usersAfterOperation.map(u => u.username)
     expect(usernames).toContain(newUser.username)
   })
+
+  test('POST /api/users fails with status 400 if username is not unique', async () => {
+    const usersBeforeOperation = await usersInDb()
+
+    const newUser = {
+      username: 'uusin',
+      name: 'nimmari',
+      password: 'password'
+    }
+
+    const result = await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(result.body).toEqual({
+      error: 'username must be unique'
+    })
+
+    const usersAfterOperation = await usersInDb()
+    expect(usersAfterOperation.length).toBe(usersBeforeOperation.length)
+  })
+
 })
+
 
 afterAll(() => {
   server.close()
