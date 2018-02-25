@@ -20,14 +20,15 @@ blogsRouter.post('/', async (request, response) => {
       })
     }
 
-    const user = await User.findById(body.userId)
+    const user = await User.findById(body.user)
+    console.log('user', user)
 
     const blog = new Blog({
       title: body.title === undefined ? null : body.title,
       author: body.author,
       url: body.url === undefined ? null : body.url,
       likes: body.likes,
-      user: user._id
+      user: user.id
     })
 
     if (isNaN(blog.likes)) {
