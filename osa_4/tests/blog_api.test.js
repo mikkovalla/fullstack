@@ -74,6 +74,22 @@ test('new blog can be added', async () => {
   expect(titles).toContain('Yo Yo All')
 })
 
+test('if likes is undefined, put likes equal to 0', async () => {
+  const liketonBlogi = {
+    title: 'liketonBlogi',
+    author: 'liketonBloggaaja',
+    url: 'liketonBlogi.fi'
+  }
+
+  await api.post('/api/blogs').send(liketonBlogi)
+  const response = await api.get('/api/blogs')
+
+  const vikaBlogi = response.body.find(blogg => blogg.title === liketonBlogi.title)
+  console.log('vikablogi', vikaBlogi)
+  expect(vikaBlogi.likes).toEqual(0)
+  expect(vikaBlogi.title).toEqual('liketonBlogi')
+})
+
 afterAll(() => {
   server.close()
 })
