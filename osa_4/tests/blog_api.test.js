@@ -109,21 +109,18 @@ describe('adding new blogs', async () => {
 })
 
 describe('deleting a blog', async () => {
-  beforeAll(async () => {
-    await newBlog.save()
-  })
 
   test('DELETE api/blogs/:id removes correct blog and returns right statuscode', async () => {
-    const blogsAtBeginning = await blogsInDb()
-
-    await api.delete(`/api/blogs/${newBlog._id}`).expect(204)
+    const blogsTotal = await blogsInDb()
+    const blogToDelete = blogsTotal[0]
+    console.log('poistettava', blogToDelete.id)
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
 
     const blogsAfterDeletion = await blogsInDb()
-
     const blogTitles = blogsAfterDeletion.map(blog => blog.title)
 
-    expect(blogTitles).not.toContain(newBlog.title)
-    expect(blogsAtBeginning.length).toEqual(blogsAfterDeletion.length)
+    expect(blogTitles).not.toContain(blogToDelete.title)
+    expect(blogsAfterDeletion).toHaveLength(blogsTotal.length - 1)
   })
 })
 

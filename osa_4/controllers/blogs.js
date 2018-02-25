@@ -47,8 +47,21 @@ blogsRouter.get('/:id', async (request, response) => {
       response.status(404).end()
     }
 
-  } catch (exception) {
-    console.log(exception)
+  } catch (error) {
+    console.log(error)
+    response.status(400).send({
+      error: 'malformatted id'
+    })
+  }
+})
+
+blogsRouter.delete('/:id', async (request, response) => {
+  try {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+
+  } catch (error) {
+    console.log(error)
     response.status(400).send({
       error: 'malformatted id'
     })
