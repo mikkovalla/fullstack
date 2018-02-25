@@ -80,15 +80,15 @@ describe('total likes', () => {
 
 describe('favorite blog', () => {
   test('if there are no blogs then result is null', () => {
-    expect(listHelper.favoriteBlog(emptyList)).toBe(null)
+    expect(listHelper.favoriteBlog(emptyList)).toEqual(null)
   })
 
   test('if there is only one blog its likes number is returned', () => {
-    expect(listHelper.favoriteBlog(listWithOneBlog)).toBe(listWithOneBlog[0])
+    expect(listHelper.favoriteBlog(listWithOneBlog)).toEqual(listWithOneBlog[0])
   })
 
   test('return blog with most likes from list of many', () => {
     //eniten likejä saaneen blogin indeksi listassa on 2
-    expect(listHelper.favoriteBlog(blogs)).toBe(blogs[2])
+    expect(listHelper.favoriteBlog(blogs)).toEqual(blogs[2])
   })
 })
