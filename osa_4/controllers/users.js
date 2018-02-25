@@ -14,6 +14,23 @@ const formatUser = (user) => {
 usersRouter.post('/', async (request, response) => {
   try {
     const body = request.body
+
+    const findUser = await User.find({
+      username: body.username
+    })
+
+    if (findUser.length > 0) {
+      return response.status(400).json({
+        error: 'username must be unique'
+      })
+    }
+
+    if (body.password.length < 3) {
+      return response.status(400).json({
+        error: 'password must be at over 3 characters'
+      })
+    }
+
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
@@ -23,6 +40,10 @@ usersRouter.post('/', async (request, response) => {
       adult: body.adult,
       passwordHash
     })
+
+    if (isNaN(user.adult)) {
+      user.adult = true
+    }
 
     const savedUser = await user.save()
     response.json(User.format(savedUser))

@@ -4,11 +4,13 @@ const {
   server
 } = require('../index')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const {
   format,
   initialBlogs,
   nonExistingId,
-  blogsInDb
+  blogsInDb,
+  usersInDb
 } = require('./tests_helper')
 const api = supertest(app)
 
@@ -121,6 +123,39 @@ describe('deleting a blog', async () => {
 
     expect(blogTitles).not.toContain(blogToDelete.title)
     expect(blogsAfterDeletion).toHaveLength(blogsTotal.length - 1)
+  })
+})
+
+describe.only('when there is initially one user in the database', async () => {
+
+  beforeAll(async () => {
+    await User.remove({})
+    const user = new User({
+      username: 'uuseri',
+      password: 'passutin'
+    })
+    await user.save()
+  })
+
+  test('POST /api/users succeeds with a fresh username', async () => {
+    const usersBeforeOperation = await usersInDb()
+
+    const newUser = {
+      username: 'uusin',
+      name: 'uudempi',
+      password: 'kaiakistauusin'
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAfterOperation = await usersInDb()
+    expect(usersAfterOperation.length).toBe(usersBeforeOperation.length + 1)
+    const usernames = usersAfterOperation.map(u => u.username)
+    expect(usernames).toContain(newUser.username)
   })
 })
 
