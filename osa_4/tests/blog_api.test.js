@@ -7,24 +7,32 @@ const Blog = require('../models/blog')
 
 const api = supertest(app)
 
+const newBlog =
+{
+  title: 'Yo Yo All',
+  author: 'Me myself and I',
+  url: 'whowhenwhere.com',
+  likes: 6
+}
+
 const initialBlogs = [{
-    title: 'kuka mitä hä?',
-    author: 'D.D. Trump',
-    url: 'whitehouse.org',
-    likes: -100
-  },
-  {
-    title: 'Javascript pour les nuls',
-    author: 'Elon Zuckerberg',
-    url: 'france.fr',
-    likes: 8
-  },
-  {
-    title: 'mä en juo!',
-    author: 'Matti Nykänen',
-    url: 'nykasenmasa.fi',
-    likes: 9
-  }
+  title: 'kuka mitä hä?',
+  author: 'D.D. Trump',
+  url: 'whitehouse.org',
+  likes: -100
+},
+{
+  title: 'Javascript pour les nuls',
+  author: 'Elon Zuckerberg',
+  url: 'france.fr',
+  likes: 8
+},
+{
+  title: 'mä en juo!',
+  author: 'Matti Nykänen',
+  url: 'nykasenmasa.fi',
+  likes: 9
+}
 ]
 
 beforeAll(async () => {
@@ -49,6 +57,21 @@ test('check blog with same title exists', async () => {
   const content = response.body.map(blogs => blogs.title)
   //blogi indeksissä 0 title on 'kuka mitä hä?'
   expect(content).toContain('kuka mitä hä?')
+})
+
+test('new blog can be added', async () => {
+
+  await api.post('/api/blogs').send(newBlog).expect(201).expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  console.log('vastaus', response.body)
+  console.log('kaikki pituus', initialBlogs.length)
+
+  const titles = response.body.map(blog => blog.title)
+
+  expect(response.body).toHaveLength(initialBlogs.length + 1)
+  expect(titles).toContain('Yo Yo All')
 })
 
 afterAll(() => {
