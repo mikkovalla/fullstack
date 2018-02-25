@@ -92,3 +92,24 @@ describe('favorite blog', () => {
     expect(listHelper.favoriteBlog(blogs)).toEqual(blogs[2])
   })
 })
+
+describe('most blogs', () => {
+
+  test('if there are no blogs then result is null', () => {
+    expect(listHelper.mostBlogs(emptyList)).toEqual(null)
+  })
+
+  test('returns author with most blogs', () => {
+    expect(listHelper.mostBlogs(blogs)).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3
+    })
+  })
+
+  test('list with one blog returns that blogs author and value 1', () => {
+    expect(listHelper.mostBlogs(listWithOneBlog)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      blogs: 1
+    })
+  })
+})

@@ -20,8 +20,35 @@ const favoriteBlog = (blogs) => {
 
   return parasBlogi
 }
+
+const mostBlogs = (blogs) => {
+
+  const reducer = (blogs, author) => {
+    return ({
+      ...blogs,
+      [author]: (blogs[author] || 0) + 1
+    })
+  }
+
+  //thank you MPJ/FunFunFunction youtube channel
+  const authorBlogCount = blogs
+    .map(blog => blog.author)
+    .reduce(
+      reducer, {})
+
+  const theMost = Object.keys(authorBlogCount)
+    .map(author => ({
+      author: author,
+      blogs: authorBlogCount[author]
+    }))
+    .reduce((paras, vertailtava) =>
+      paras === null || vertailtava.blogs > paras.blogs ? vertailtava : paras, null)
+
+  return theMost
+}
 module.exports = {
   dummy,
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs
 }
