@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [{
   title: 'kuka mitä hä?',
@@ -29,6 +30,12 @@ const format = (blog) => {
     id: blog._id
   }
 }
+
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users
+}
+
 const nonExistingId = async () => {
   const blog = new Blog()
   await blog.save()
@@ -46,5 +53,6 @@ module.exports = {
   initialBlogs,
   format,
   nonExistingId,
-  blogsInDb
+  blogsInDb,
+  usersInDb
 }
