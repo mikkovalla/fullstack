@@ -1,10 +1,11 @@
 POST http://localhost:3003/api/blogs
 content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pbnNrdWxpaW5pIiwiaWQiOiI1YTkzMjQyYWFjMGMyZTlkNDY4Yjk3ZjYiLCJpYXQiOjE1MTk5OTI5NTN9.7OxNQQndASeDvouW3Jas43GQSjMoP8CBpFPJafPPjzM
 
 {
-  "title": "My fifhtyyy blog",
-  "author": "Moikka Moi",
-  "url": "blah blah blah",
-  "likes": 3,
+  "title": "uusi blogi",
+  "author": "Mikko",
+  "url": "uusiblogi.fi",
+  "likes": 9,
   "user": "5a93242aac0c2e9d468b97f6"
 }
