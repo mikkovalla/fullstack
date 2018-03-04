@@ -27,7 +27,7 @@ class App extends React.Component {
         message,
         success
       }
-    });
+    })
     setTimeout(() => {
       this.setState({
         notification: null
@@ -84,7 +84,10 @@ class App extends React.Component {
         user: this.state.user
       })
       this.setState(vanhat => ({
-        blogs: [...vanhat.blogs, uusiBlogi]
+        blogs: [...vanhat.blogs, uusiBlogi],
+        title: '',
+        author: '',
+        url: ''
       }))
       this.notification(
         `a new blog '${uusiBlogi.title}' by ${uusiBlogi.author} added`
