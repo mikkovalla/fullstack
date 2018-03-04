@@ -107,6 +107,14 @@ class App extends React.Component {
     })
   }
 
+  handleBlogShow = (id) => {
+    this.setState(vanhaTila => ({
+      blogs: vanhaTila.blogs.map(
+        blog => (blog.id === id ? { ...blog, avaa: !blog.avaa } : blog)
+      )
+    }))
+  }
+
   render() {
     if(this.state.user) {
       return (
@@ -114,7 +122,7 @@ class App extends React.Component {
         {this.state.notification && (
           <Notifications {...this.state.notification} />
         )}
-        <BlogList blogs={this.state.blogs} user={this.state.user.name} logout={this.handleLogout} />
+        <BlogList blogs={this.state.blogs} user={this.state.user.name} logout={this.handleLogout} blogClick={this.handleBlogShow}/>
         <Togglable nayta='create blog' piilota='hide form'>
           <BlogForm onSubmit={this.handleBlogCreation} onInputChange={this.handleFieldChange} title={this.state.title} author={this.state.author} url={this.state.url} />
         </Togglable>       

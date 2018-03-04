@@ -1,6 +1,6 @@
 import React from 'react'
 
-class Togglable extends React.PureComponent {
+class Togglable extends React.Component {
   state = {
     nayta: false
   }
