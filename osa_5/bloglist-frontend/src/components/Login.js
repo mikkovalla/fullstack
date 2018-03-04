@@ -15,9 +15,9 @@ const Login = ({ onSubmit, username, password, onValueChange }) => (
 )
 
 Login.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
+  onSubmit: propTypes.func.isRequired,
+  username: propTypes.string.isRequired,
+  password: propTypes.string.isRequired
 }
 
 export default Login
