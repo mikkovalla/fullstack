@@ -3,6 +3,7 @@ import BlogList from './components/BlogList'
 import blogService from './services/blogs'
 import Login from './components/Login'
 import loginService from './services/login'
+import BlogForm from "./components/BlogForm"
 
 class App extends React.Component {
   constructor(props) {
@@ -12,7 +13,10 @@ class App extends React.Component {
       username: '',
       password: '',
       error: null,
-      user: null
+      user: null,
+      title: '',
+      author: '',
+      url: ''
     }
   }
 
@@ -23,6 +27,7 @@ class App extends React.Component {
       this.setState({
         user
       })
+      blogService.setToken(user.token)
     }
 
     blogService.getAll().then(blogs =>
@@ -30,7 +35,7 @@ class App extends React.Component {
     )
   } 
 
-  handleLoginFieldChange = (event) => {
+  handleFieldChange = (event) => {
     this.setState({ 
       [event.target.name]: event.target.value,
     })
@@ -46,6 +51,7 @@ class App extends React.Component {
       
       window.localStorage.setItem('user', JSON.stringify(user))
       this.setState({ username: '', password: '', user})
+      blogService.setToken(user.token)
 
     } catch(exception) {
       this.setState({
@@ -55,6 +61,24 @@ class App extends React.Component {
         this.setState({ error: null })
       }, 5000)
     }
+  }
+
+  handleBlogCreation = async (event) => {
+    event.preventDefault()
+    try {
+      const uusiBlogi = await blogService.create({
+        title: this.state.title,
+        author: this.state.author,
+        url: this.state.url,
+        user: this.state.user
+      })
+      this.setState(vanhat => ({
+        blogs: [...vanhat.blogs, uusiBlogi]
+      }))
+    } catch (error) {
+      console.log('blogin lisäys error', error)
+    }
+
   }
 
   handleLogout = () => {
@@ -69,6 +93,7 @@ class App extends React.Component {
       return (
       <div>
         <BlogList blogs={this.state.blogs} user={this.state.user.name} logout={this.handleLogout} />
+        <BlogForm onSubmit={this.handleBlogCreation} onInputChange={this.handleFieldChange} title={this.state.title} author={this.state.author} url={this.state.url} />
       </div>
       )
     }
@@ -78,7 +103,7 @@ class App extends React.Component {
         error={this.state.error} 
         username={this.state.username}
         password={this.state.password} 
-        onValueChange={this.handleLoginFieldChange}
+        onValueChange={this.handleFieldChange}
         />
       )
     }
