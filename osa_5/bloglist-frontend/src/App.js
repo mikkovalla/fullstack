@@ -17,6 +17,14 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    const loggedUserAsJson = window.localStorage.getItem('user')
+    if(loggedUserAsJson) {
+      const user = JSON.parse(loggedUserAsJson)
+      this.setState({
+        user
+      })
+    }
+
     blogService.getAll().then(blogs =>
       this.setState({ blogs })
     )
@@ -35,8 +43,10 @@ class App extends React.Component {
         username: this.state.username,
         password: this.state.password
       })
-  
+      
+      window.localStorage.setItem('user', JSON.stringify(user))
       this.setState({ username: '', password: '', user})
+
     } catch(exception) {
       this.setState({
         error: 'käyttäjätunnus tai salasana virheellinen',
@@ -47,12 +57,18 @@ class App extends React.Component {
     }
   }
 
+  handleLogout = () => {
+    window.localStorage.clear()
+    this.setState({
+      user: null
+    })
+  }
+
   render() {
     if(this.state.user) {
       return (
       <div>
-        {this.state.user.name} logged in!
-        <BlogList blogs={this.state.blogs} />
+        <BlogList blogs={this.state.blogs} user={this.state.user.name} logout={this.handleLogout} />
       </div>
       )
     }
