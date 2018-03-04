@@ -36,7 +36,7 @@ class App extends React.Component {
     }, 5000)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const loggedUserAsJson = window.localStorage.getItem('user')
     if(loggedUserAsJson) {
       const user = JSON.parse(loggedUserAsJson)
@@ -45,10 +45,9 @@ class App extends React.Component {
       })
       blogService.setToken(user.token)
     }
-
-    blogService.getAll().then(blogs =>
+    const blogs = await blogService.getAll()
+      blogs.sort((blog1, blog2) => blog2.likes - blog1.likes)
       this.setState({ blogs })
-    )
   } 
 
   handleFieldChange = (event) => {
@@ -129,6 +128,7 @@ class App extends React.Component {
           : blogi
         )
     }))
+    console.log('update likes', updateBlog)
   }
 
   render() {
