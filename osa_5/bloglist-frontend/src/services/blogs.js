@@ -31,4 +31,15 @@ const update = async ({ id, user: {_id: user }, ...blog}) => {
   return response.data
 }
 
-export default { getAll, create, setToken, update }
+//tässä ei voi käyttää näköjään 'delete' muuttuja deklaraatiota
+const remove = async (id) => {
+  const uri = `${baseUrl}/${id}`
+  const response = await axios.delete(uri, {
+    headers: {
+      Authorization: bearerToken
+    }
+  })
+  return response.data
+}
+
+export default { getAll, create, setToken, update, remove }

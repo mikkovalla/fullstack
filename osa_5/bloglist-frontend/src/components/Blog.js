@@ -10,6 +10,9 @@ class Blog extends React.Component {
     this.props.onLike(this.props.blog)
   }
 
+  handleBlogDelete = () => {
+    this.props.onDelete(this.props.blog)
+  }
   render () {
     const tyylit = {
       border: '2px solid blue',
@@ -35,6 +38,7 @@ class Blog extends React.Component {
             <div>
               added by {blog.user.name}
             </div>
+            {blog.poista && (<button type='button' onClick={this.handleBlogDelete}>delete blog</button>)}
           </div>
         )}
       </div>

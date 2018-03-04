@@ -37,17 +37,23 @@ class App extends React.Component {
   }
 
   async componentDidMount() {
-    const loggedUserAsJson = window.localStorage.getItem('user')
-    if(loggedUserAsJson) {
-      const user = JSON.parse(loggedUserAsJson)
-      this.setState({
-        user
-      })
-      blogService.setToken(user.token)
-    }
     const blogs = await blogService.getAll()
       blogs.sort((blog1, blog2) => blog2.likes - blog1.likes)
       this.setState({ blogs })
+    const loggedUserAsJson = window.localStorage.getItem('user')
+
+    if(loggedUserAsJson) {
+      const user = JSON.parse(loggedUserAsJson)
+      console.log('user', user._id)
+      this.setState(prev => ({
+        blogs: prev.blogs.map(blog => ({
+          ...blog,
+          poista: user.id === blog.user._id
+        })),
+        user
+      }))
+      blogService.setToken(user.token)
+    } 
   } 
 
   handleFieldChange = (event) => {
@@ -65,7 +71,14 @@ class App extends React.Component {
       })
       
       window.localStorage.setItem('user', JSON.stringify(user))
-      this.setState({ username: '', password: '', user})
+      this.setState(vanhaTila => ({
+        blogs: vanhaTila.blogs.map(blog => ({
+          ...blog,
+          poista: user.id === blog.user._id
+        })),
+          username: '',
+          password: '',
+          user}))
       blogService.setToken(user.token)
       this.notification(`Welcome back ${user.name}!`)
     } catch(error) {
@@ -131,6 +144,16 @@ class App extends React.Component {
     console.log('update likes', updateBlog)
   }
 
+  handleBlogDelete = async ({ id, title, author }) => {
+    if(!window.confirm(`delete '${title}' by ${author}`)) {
+      return;
+    }
+    await blogService.remove(id)
+    this.setState(vanhaTila => ({
+      blogs: vanhaTila.blogs.filter(blogi => blogi.id !== id)
+    }))
+  }
+
   render() {
     if(this.state.user) {
       return (
@@ -138,7 +161,13 @@ class App extends React.Component {
         {this.state.notification && (
           <Notifications {...this.state.notification} />
         )}
-        <BlogList blogs={this.state.blogs} user={this.state.user.name} logout={this.handleLogout} blogClick={this.handleBlogShow} blogLike={this.handleBlogLikesUpdate}/>
+        <BlogList 
+          blogs={this.state.blogs} 
+          user={this.state.user.name} 
+          logout={this.handleLogout} 
+          blogClick={this.handleBlogShow} 
+          blogLike={this.handleBlogLikesUpdate}
+          blogDelete={this.handleBlogDelete} />
         <Togglable nayta='create blog' piilota='hide form'>
           <BlogForm onSubmit={this.handleBlogCreation} onInputChange={this.handleFieldChange} title={this.state.title} author={this.state.author} url={this.state.url} />
         </Togglable>       
