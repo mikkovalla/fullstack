@@ -1,12 +1,18 @@
 import React from 'react'
-import Blog from './components/Blog'
+import BlogList from './components/BlogList'
 import blogService from './services/blogs'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      blogs: []
+      blogs: [],
+      loginForm: {
+        username: '',
+        password: ''
+      },
+      loginError: null,
+      user: null
     }
   }
 
@@ -19,10 +25,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h2>blogs</h2>
-        {this.state.blogs.map(blog => 
-          <Blog key={blog._id} blog={blog}/>
-        )}
+        <BlogList blogs={this.state.blogs} />
       </div>
     );
   }
