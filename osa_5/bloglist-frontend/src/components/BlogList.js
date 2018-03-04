@@ -4,7 +4,7 @@ import Blog from './Blog'
 const BlogList = ({ blogs }) => (
   <div>
     <h2>Blogs</h2>
-    {blogs.map(blog => <Blog key={blog._id} blog={blog} />)}
+    {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
   </div>
 )
 
