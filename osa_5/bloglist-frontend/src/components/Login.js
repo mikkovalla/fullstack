@@ -1,13 +1,8 @@
 import React from 'react'
 
-const Login = ({ onSubmit, error, username, password, onValueChange }) => (
+const Login = ({ onSubmit, username, password, onValueChange }) => (
   <form onSubmit={onSubmit}>
     <h2>Log in to application</h2>
-    
-    {error && <div>
-      {error}
-    </div>}
-
     <div>
       Username: <input type='text' name='username' value={username} onChange={onValueChange}/>
     </div>

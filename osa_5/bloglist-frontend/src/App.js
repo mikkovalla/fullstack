@@ -4,6 +4,7 @@ import blogService from './services/blogs'
 import Login from './components/Login'
 import loginService from './services/login'
 import BlogForm from "./components/BlogForm"
+import Notifications from "./components/Notifications";
 
 class App extends React.Component {
   constructor(props) {
@@ -12,12 +13,26 @@ class App extends React.Component {
       blogs: [],
       username: '',
       password: '',
-      error: null,
       user: null,
       title: '',
       author: '',
-      url: ''
+      url: '',
+      notification: null
     }
+  }
+
+  notification = (message, success = true) => {
+    this.setState({
+      notification: {
+        message,
+        success
+      }
+    });
+    setTimeout(() => {
+      this.setState({
+        notification: null
+      })
+    }, 5000)
   }
 
   componentDidMount() {
@@ -52,14 +67,10 @@ class App extends React.Component {
       window.localStorage.setItem('user', JSON.stringify(user))
       this.setState({ username: '', password: '', user})
       blogService.setToken(user.token)
-
-    } catch(exception) {
-      this.setState({
-        error: 'käyttäjätunnus tai salasana virheellinen',
-      })
-      setTimeout(() => {
-        this.setState({ error: null })
-      }, 5000)
+      this.notification(`Welcome back ${user.name}!`)
+    } catch(error) {
+      console.log('handleLogin e', error)
+      this.notification(`Wrong username or password!`, false)
     }
   }
 
@@ -75,8 +86,12 @@ class App extends React.Component {
       this.setState(vanhat => ({
         blogs: [...vanhat.blogs, uusiBlogi]
       }))
+      this.notification(
+        `a new blog '${uusiBlogi.title}' by ${uusiBlogi.author} added`
+      )
     } catch (error) {
       console.log('blogin lisäys error', error)
+      this.notification(error.response.data.message, false)
     }
 
   }
@@ -92,19 +107,27 @@ class App extends React.Component {
     if(this.state.user) {
       return (
       <div>
+        {this.state.notification && (
+          <Notifications {...this.state.notification} />
+        )}
         <BlogList blogs={this.state.blogs} user={this.state.user.name} logout={this.handleLogout} />
         <BlogForm onSubmit={this.handleBlogCreation} onInputChange={this.handleFieldChange} title={this.state.title} author={this.state.author} url={this.state.url} />
       </div>
       )
     }
       return (
-        <Login 
+        <div>
+          {this.state.notification && (
+            <Notifications {...this.state.notification} />
+          )}
+          <Login 
         onSubmit={this.handleLogin} 
-        error={this.state.error} 
         username={this.state.username}
         password={this.state.password} 
         onValueChange={this.handleFieldChange}
         />
+        </div>
+        
       )
     }
   }
