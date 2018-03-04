@@ -109,9 +109,25 @@ class App extends React.Component {
 
   handleBlogShow = (id) => {
     this.setState(vanhaTila => ({
-      blogs: vanhaTila.blogs.map(
+      blogs: 
+      vanhaTila.blogs.map(
         blog => (blog.id === id ? { ...blog, avaa: !blog.avaa } : blog)
       )
+    }))
+  }
+
+  handleBlogLikesUpdate = async (blog) => {
+    const updateBlog = await blogService.update({
+      ...blog,
+      likes: blog.likes + 1
+    })
+    this.setState(vanhaTila => ({
+      blogs: 
+        vanhaTila.blogs.map(
+          blogi => blogi.id === updateBlog.id
+          ? {...blog, likes: updateBlog.likes}
+          : blogi
+        )
     }))
   }
 
@@ -122,7 +138,7 @@ class App extends React.Component {
         {this.state.notification && (
           <Notifications {...this.state.notification} />
         )}
-        <BlogList blogs={this.state.blogs} user={this.state.user.name} logout={this.handleLogout} blogClick={this.handleBlogShow}/>
+        <BlogList blogs={this.state.blogs} user={this.state.user.name} logout={this.handleLogout} blogClick={this.handleBlogShow} blogLike={this.handleBlogLikesUpdate}/>
         <Togglable nayta='create blog' piilota='hide form'>
           <BlogForm onSubmit={this.handleBlogCreation} onInputChange={this.handleFieldChange} title={this.state.title} author={this.state.author} url={this.state.url} />
         </Togglable>       
