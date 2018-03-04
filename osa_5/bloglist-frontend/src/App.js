@@ -4,7 +4,8 @@ import blogService from './services/blogs'
 import Login from './components/Login'
 import loginService from './services/login'
 import BlogForm from "./components/BlogForm"
-import Notifications from "./components/Notifications";
+import Notifications from "./components/Notifications"
+import Togglable from "./components/Togglable"
 
 class App extends React.Component {
   constructor(props) {
@@ -114,7 +115,9 @@ class App extends React.Component {
           <Notifications {...this.state.notification} />
         )}
         <BlogList blogs={this.state.blogs} user={this.state.user.name} logout={this.handleLogout} />
-        <BlogForm onSubmit={this.handleBlogCreation} onInputChange={this.handleFieldChange} title={this.state.title} author={this.state.author} url={this.state.url} />
+        <Togglable nayta='create blog' piilota='hide form'>
+          <BlogForm onSubmit={this.handleBlogCreation} onInputChange={this.handleFieldChange} title={this.state.title} author={this.state.author} url={this.state.url} />
+        </Togglable>       
       </div>
       )
     }
