@@ -2,6 +2,17 @@ import React from 'react';
 
 class App extends React.Component {
 
+  addNew = (event) => {
+    event.preventDefault()
+
+    const content = event.target.anecdote.value
+    this.props.store.dispatch({
+      type: 'ADD',
+      content
+    })
+    event.target.anecdote.value = ''
+  }
+
   voteFor = (id) => (event) => {
     event.preventDefault()
 
