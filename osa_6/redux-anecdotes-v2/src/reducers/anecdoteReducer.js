@@ -21,22 +21,25 @@ const initialState = anecdotesAtStart.map(asObject)
 
 const reducer = (store = initialState, action) => {
   switch (action.type) {
-  case 'VOTE':
-    const id = action.data.id
-    const old = store.filter(a => a.id !== id)
-    const voted = store.find(a => a.id === id)    
-  return [...old, { ...voted, votes: voted.votes + 1 }]
-  case 'CREATE':
-    return [...store, action.data]
-  default:
-    return store
+    case 'VOTE':
+      const id = action.data.id
+      const anecs = store
+      const old = anecs.filter(a => a.id !== id)
+      const voted = anecs.find(a => a.id === id)
+      return [...old, { ...voted, votes: voted.votes + 1 }]
+    case 'CREATE':
+      return [...store.anecdotes, action.data]
+    default:
+      return store
   }
 }
 
 export const giveVote = (id) => {
   return {
     type: 'VOTE',
-    data: { id }
+    data: {
+      id
+    }
   }
 }
 
