@@ -28,7 +28,7 @@ const reducer = (store = initialState, action) => {
       const voted = anecs.find(a => a.id === id)
       return [...old, { ...voted, votes: voted.votes + 1 }]
     case 'CREATE':
-      return [...store.anecdotes, action.data]
+      return [...store, action.data]
     default:
       return store
   }

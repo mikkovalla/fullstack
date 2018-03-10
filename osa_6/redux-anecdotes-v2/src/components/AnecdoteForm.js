@@ -1,11 +1,19 @@
 import React from 'react'
 import { newAnecdote } from '../reducers/anecdoteReducer'
+import { notification } from '../reducers/notificationReducer'
+import PropTypes from 'prop-types'
 
 class AnecdoteForm extends React.Component {
+
   handleSubmit = (e) => {
     e.preventDefault()
     const content = e.target.anecdote.value
-    this.props.store.dispatch(newAnecdote(content))
+    this.context.store.dispatch(newAnecdote(content))
+    const notice = `you added ${content}`
+    this.context.store.dispatch(notification(notice))
+    setTimeout(() => {
+      this.context.store.dispatch(notification(null))
+    }, 5000)
 
     e.target.anecdote.value = ''
   }
@@ -22,4 +30,7 @@ class AnecdoteForm extends React.Component {
   }
 }
 
+AnecdoteForm.contextTypes = {
+  store: PropTypes.object
+}
 export default AnecdoteForm

@@ -1,11 +1,21 @@
 import React from 'react'
 import { giveVote } from '../reducers/anecdoteReducer'
+import { notification } from '../reducers/notificationReducer'
+import PropTypes from 'prop-types'
 
 class AnecdoteList extends React.Component {
+
+  aanesta = (anecdote) => () => {
+    this.context.store.dispatch(giveVote(anecdote.id))
+    const notice = `you voted ${anecdote.content}`
+    this.context.store.dispatch(notification(notice))
+    setTimeout(() => {
+      this.context.store.dispatch(notification(null))
+    }, 5000)
+
+  }
   render() {
-    const anecdotes = this.props.store.getState().anecdotes
-    console.log('list component', anecdotes)
-    console.log('tyyppi', typeof(anecdotes))
+    const anecdotes = this.context.store.getState().anecdotes
     return (
       <div>
         <h2>Anecdotes</h2>
@@ -16,8 +26,8 @@ class AnecdoteList extends React.Component {
             </div>
             <div>
               has {anecdote.votes}
-              <button onClick={() =>
-                this.props.store.dispatch(giveVote(anecdote.id))
+              <button onClick={
+                this.aanesta(anecdote)
               }>
                 vote
               </button>
@@ -28,5 +38,7 @@ class AnecdoteList extends React.Component {
     )
   }
 }
-
+AnecdoteList.contextTypes = {
+  store: PropTypes.object
+}
 export default AnecdoteList

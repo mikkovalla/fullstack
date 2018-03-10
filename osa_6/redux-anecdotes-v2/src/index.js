@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 //import { createLogger } from 'redux-logger'
 
 
-const render = () => {
+const render = () => {  
   ReactDOM.render(
     <Provider store={store}>
       <App />
@@ -14,6 +14,5 @@ const render = () => {
     document.getElementById('root')
   )
 }
-
 render()
 store.subscribe(render)
