@@ -2,8 +2,15 @@ import React from 'react'
 import Notification from './components/Notification'
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
+import { connect } from 'react-redux'
+import { initFromDb } from './reducers/anecdoteReducer'
+
 
 class App extends React.Component {
+
+  componentDidMount = async () => {
+    this.props.initFromDb()
+  }
 
   render() {
     return (
@@ -17,4 +24,7 @@ class App extends React.Component {
   }
 }
 
-export default App
+export default connect(
+  null,
+  { initFromDb }
+)(App)

@@ -1,3 +1,4 @@
+import anecdoteService from './../services/anecdotes'
 
 const reducer = (store = [], action) => {
   console.log('store', store)
@@ -33,10 +34,13 @@ export const newAnecdote = (content) => {
   }
 }
 
-export const initFromDb = (content) => {
-  return {
-    type: 'INIT',
-    content
+export const initFromDb = () => {
+  return async (dispatch) => {
+    const content = await anecdoteService.getAll()
+    dispatch({
+      type: 'INIT',
+      content
+    })
   }
 }
 

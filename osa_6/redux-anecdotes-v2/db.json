@@ -2,7 +2,7 @@
   "anecdotes": [
     {
       "content": "If it hurts, do it more often",
-      "votes": 3,
+      "votes": 6,
       "id": "47145"
     },
     {
@@ -22,8 +22,8 @@
     },
     {
       "content": "Premature optimization is the root of all evil.",
-      "id": "25170",
-      "votes": 0
+      "votes": 4,
+      "id": "25170"
     },
     {
       "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
@@ -42,7 +42,7 @@
     },
     {
       "content": "hello fro mthe other saideee",
-      "votes": 0,
+      "votes": 1,
       "id": "Famo3Ur"
     },
     {
@@ -87,7 +87,7 @@
     },
     {
       "content": "moikka",
-      "votes": 0,
+      "votes": 7,
       "id": "N9~UjwV"
     },
     {
@@ -104,6 +104,16 @@
       "content": "hhheee",
       "votes": 0,
       "id": "EOCzIsD"
+    },
+    {
+      "content": "moikka moi taas kaikilla",
+      "votes": 0,
+      "id": "tJVv8xO"
+    },
+    {
+      "content": "hei hei mitä kuluu",
+      "votes": 0,
+      "id": "VJ5WRrr"
     }
   ]
 }
