@@ -1,27 +1,20 @@
 import React from 'react'
-import { giveVote, initFromDb } from '../reducers/anecdoteReducer'
+import { giveVote } from '../reducers/anecdoteReducer'
 import { notification } from '../reducers/notificationReducer'
 import Filter from './Filter'
 import { connect } from 'react-redux'
-import anecdoteService from '../services/anecdotes'
 
 class AnecdoteList extends React.Component {
 
   aanesta = (anecdote) => async () => {
-    const updateAnec = await anecdoteService.update(anecdote)
-    this.props.giveVote(updateAnec.id)
-    const notice = `you voted ${updateAnec.content}`
+    this.props.giveVote(anecdote)
+    const notice = `you voted ${anecdote.content}`
     this.props.notification(notice)
     setTimeout(() => {
       this.props.notification(null)
     }, 5000)
   }
 
-  componentDidMount = async () => {
-    const anecdotes = await anecdoteService.getAll()
-    this.props.initFromDb(anecdotes)
-    console.log('anecit', anecdotes)
-  }
   render() {
     return (
       <div>
@@ -59,5 +52,5 @@ const mapStateToProps = (state) => {
 }
 export default connect (
   mapStateToProps,
-  { giveVote, notification, initFromDb }
+  { giveVote, notification }
 )(AnecdoteList)

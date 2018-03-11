@@ -10,7 +10,7 @@ const reducer = (store = [], action) => {
       const voted = anecs.find(a => a.id === id)
       return [...old, { ...voted, votes: voted.votes + 1 }]
     case 'CREATE':
-      return [...store, action.content]
+      return [...store, action.uusi]
     case 'INIT':
       return action.content
     default:
@@ -18,19 +18,25 @@ const reducer = (store = [], action) => {
   }
 }
 
-export const giveVote = (id) => {
-  return {
-    type: 'VOTE',
-    data: {
-      id
-    }
+export const giveVote = (anectode) => {
+  return async (dispatch) => {
+    const uusin = await anecdoteService.update(anectode)
+    dispatch({
+      type: 'VOTE',
+      data: {
+        id: uusin.id
+      }
+    })
   }
 }
 
 export const newAnecdote = (content) => {
-  return {
-    type: 'CREATE',
-    content
+  return async (dispatch) => {
+    const uusi = await anecdoteService.create(content)
+    dispatch({
+      type: 'CREATE',
+      uusi
+    })
   }
 }
 
