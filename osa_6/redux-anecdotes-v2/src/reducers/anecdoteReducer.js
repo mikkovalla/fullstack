@@ -9,7 +9,7 @@ const reducer = (store = [], action) => {
       const voted = anecs.find(a => a.id === id)
       return [...old, { ...voted, votes: voted.votes + 1 }]
     case 'CREATE':
-      return [...store, action.data]
+      return [...store, action.content]
     case 'INIT':
       return action.content
     default:

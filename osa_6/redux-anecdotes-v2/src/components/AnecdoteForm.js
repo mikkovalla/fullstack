@@ -9,6 +9,7 @@ class AnecdoteForm extends React.Component {
   handleSubmit = async (e) => {
     e.preventDefault()
     const content = e.target.anecdote.value
+    e.target.anecdote.value = ''
     const uusin = await anecdoteService.create(content)
     this.props.newAnecdote(uusin)
     const notice = `you added ${content}`
@@ -16,8 +17,6 @@ class AnecdoteForm extends React.Component {
     setTimeout(() => {
       this.props.notification(null)
     }, 5000)
-
-    e.target.anecdote.value = ''
   }
   render() {
     return (
