@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 class Notification extends React.Component {
 
@@ -9,7 +9,7 @@ class Notification extends React.Component {
       padding: 10,
       borderWidth: 1,
     }
-    const notifications = this.context.store.getState().notification
+    const notifications = this.props.notification
 
     if(notifications){
 
@@ -25,8 +25,10 @@ class Notification extends React.Component {
   }
 }
 
-Notification.contextTypes = {
-  store: PropTypes.object
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification
+  }
 }
 
-export default Notification
+export default connect(mapStateToProps)(Notification)
