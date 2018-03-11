@@ -1,6 +1,16 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
+const styles = {
+  notification: {
+    borderStyle: 'solid',
+    borderColor: 'green',
+    color: 'blue',
+    border: 2
+
+  }
+}
+
 const Menu = () => (
   <div>    
     <Link to='/'>anecdotes </Link> &nbsp;
@@ -21,7 +31,7 @@ const AnecdoteList = ({ anecdotes }) => (
 const Anecdote = ({ anecdote }) => {
   return ( 
     <div>
-      <h3>{`${anecdote.content}} by ${anecdote.author}`}</h3>
+      <h3>{`${anecdote.content} by ${anecdote.author}`}</h3>
       <p>{`has ${anecdote.votes} votes`}</p>
       <p>for more info see <a href={anecdote.info}>{anecdote.info}</a></p>
     </div>
@@ -166,6 +176,8 @@ class App extends React.Component {
           <div>
             <h1>Software anecdotes</h1>
             <Menu />
+            <div>{this.state.notification}</div>
+            {this.state.notification === '' ? '' : <div style={styles.notification}>{this.state.notification}</div>}
             <Route exact path='/' render={() => <AnecdoteList anecdotes={this.state.anecdotes} />} />
             <Route path='/create' render={({ history }) => <CreateNew notify={this.notify} history={history} addNew={this.addNew} />} />
             <Route path='/about' render={() => <About />} />
