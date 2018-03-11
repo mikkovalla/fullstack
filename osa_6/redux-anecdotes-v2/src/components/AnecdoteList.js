@@ -1,6 +1,7 @@
 import React from 'react'
 import { giveVote } from '../reducers/anecdoteReducer'
 import { notification } from '../reducers/notificationReducer'
+import Filter from './Filter'
 import PropTypes from 'prop-types'
 
 class AnecdoteList extends React.Component {
@@ -15,11 +16,15 @@ class AnecdoteList extends React.Component {
 
   }
   render() {
-    const anecdotes = this.context.store.getState().anecdotes
+    const { anecdotes, filter } = this.context.store.getState()
+    const filteredAnecdotes = anecdotes.filter(anecdote => anecdote.content.match(
+      new RegExp(filter, 'gi')
+    ))
     return (
       <div>
         <h2>Anecdotes</h2>
-        {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
+        <Filter store={filter}/>
+        {filteredAnecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
           <div key={anecdote.id}>
             <div>
               {anecdote.content}
