@@ -1,4 +1,4 @@
-const filterReducer = (state=null, action) => {
+const filterReducer = (state = null, action) => {
   if(action.type === 'FILTER') {
     return action.content
   }

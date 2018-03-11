@@ -1,19 +1,26 @@
 import React from 'react'
-import { giveVote } from '../reducers/anecdoteReducer'
+import { giveVote, initFromDb } from '../reducers/anecdoteReducer'
 import { notification } from '../reducers/notificationReducer'
 import Filter from './Filter'
 import { connect } from 'react-redux'
+import anecdoteService from '../services/anecdotes'
 
 class AnecdoteList extends React.Component {
 
-  aanesta = (anecdote) => () => {
-    this.props.giveVote(anecdote.id)
-    const notice = `you voted ${anecdote.content}`
+  aanesta = (anecdote) => async () => {
+    const updateAnec = await anecdoteService.update(anecdote)
+    this.props.giveVote(updateAnec.id)
+    const notice = `you voted ${updateAnec.content}`
     this.props.notification(notice)
     setTimeout(() => {
       this.props.notification(null)
     }, 5000)
+  }
 
+  componentDidMount = async () => {
+    const anecdotes = await anecdoteService.getAll()
+    this.props.initFromDb(anecdotes)
+    console.log('anecit', anecdotes)
   }
   render() {
     return (
@@ -41,9 +48,8 @@ class AnecdoteList extends React.Component {
 }
 
 const filteredAnecdotes = (anecdotes, filter) => {
-  const anecs = anecdotes.filter(anec => anec.content.match(new RegExp(filter, 'gi'))).sort((a, b) => b.votes - a.votes)
-
-  return anecs
+  console.log('toot',anecdotes)
+  return anecdotes.filter(anec => anec.content.match(new RegExp(filter, 'gi'))).sort((a, b) => b.votes - a.votes)
 }
 
 const mapStateToProps = (state) => {
@@ -53,5 +59,5 @@ const mapStateToProps = (state) => {
 }
 export default connect (
   mapStateToProps,
-  { giveVote, notification }
+  { giveVote, notification, initFromDb }
 )(AnecdoteList)
