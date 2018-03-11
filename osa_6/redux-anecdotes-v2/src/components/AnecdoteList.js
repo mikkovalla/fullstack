@@ -2,29 +2,25 @@ import React from 'react'
 import { giveVote } from '../reducers/anecdoteReducer'
 import { notification } from '../reducers/notificationReducer'
 import Filter from './Filter'
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 class AnecdoteList extends React.Component {
 
   aanesta = (anecdote) => () => {
-    this.context.store.dispatch(giveVote(anecdote.id))
+    this.props.giveVote(anecdote.id)
     const notice = `you voted ${anecdote.content}`
-    this.context.store.dispatch(notification(notice))
+    this.props.notification(notice)
     setTimeout(() => {
-      this.context.store.dispatch(notification(null))
+      this.props.notification(null)
     }, 5000)
 
   }
   render() {
-    const { anecdotes, filter } = this.context.store.getState()
-    const filteredAnecdotes = anecdotes.filter(anecdote => anecdote.content.match(
-      new RegExp(filter, 'gi')
-    ))
     return (
       <div>
         <h2>Anecdotes</h2>
-        <Filter store={filter}/>
-        {filteredAnecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
+        <Filter />
+        {this.props.filterAnecdotes.map(anecdote =>
           <div key={anecdote.id}>
             <div>
               {anecdote.content}
@@ -43,7 +39,19 @@ class AnecdoteList extends React.Component {
     )
   }
 }
-AnecdoteList.contextTypes = {
-  store: PropTypes.object
+
+const filteredAnecdotes = (anecdotes, filter) => {
+  const anecs = anecdotes.filter(anec => anec.content.match(new RegExp(filter, 'gi'))).sort((a, b) => b.votes - a.votes)
+
+  return anecs
 }
-export default AnecdoteList
+
+const mapStateToProps = (state) => {
+  return {
+    filterAnecdotes: filteredAnecdotes(state.anecdotes, state.filter)
+  }
+}
+export default connect (
+  mapStateToProps,
+  { giveVote, notification }
+)(AnecdoteList)
